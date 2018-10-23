@@ -28,7 +28,7 @@ while IFS='=' read -r name _ ; do
 done < <(env | sort)
 
 # Handle the mount-buildkite-agent option
-if [[ "${BUILDKITE_PLUGIN_DOCKER_MOUNT_BUILDKITE_AGENT:-true}" =~ (true|on|1) ]] ; then
+if [[ "${BUILDKITE_PLUGIN_DOCKER_MOUNT_BUILDKITE_AGENT:-false}" =~ (true|on|1) ]] ; then
   if [[ -z "${BUILDKITE_AGENT_BINARY_PATH:-}" ]] ; then
     BUILDKITE_AGENT_BINARY_PATH=$(command -v buildkite-agent)
   fi
