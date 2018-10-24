@@ -186,6 +186,30 @@ load '/usr/local/lib/bats/load.bash'
   unset BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_GROUPS_1
 }
 
+@test "Runs BUILDKITE_COMMAND with additional capabilities" {
+   export BUILDKITE_PLUGIN_DOCKER_IMAGE=image:tag
+   export BUILDKITE_PLUGIN_DOCKER_MOUNT_BUILDKITE_AGENT=false
+   export BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_GROUPS_0=foo
+   export BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_CAPABILITIES_0=foo
+   export BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_CAPABILITIES_1=bar
+   export BUILDKITE_COMMAND="echo hello world"
+
+   stub docker \
+     "run -it --rm --volume $PWD:/workdir --workdir /workdir --group-add foo --cap-add foo --cap-add bar image:tag /bin/sh -e -c 'echo hello world' : echo ran command in docker"
+
+   run $PWD/hooks/command
+
+   assert_success
+   assert_output --partial "ran command in docker"
+
+   unstub docker
+   unset BUILDKITE_PLUGIN_DOCKER_IMAGE
+   unset BUILDKITE_COMMAND
+   unset BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_GROUPS_0
+   unset BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_CAPABILITIES_0
+   unset BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_CAPABILITIES_1
+ }
+
 @test "Runs command with network that doesn't exist" {
   export BUILDKITE_PLUGIN_DOCKER_WORKDIR=/app
   export BUILDKITE_PLUGIN_DOCKER_IMAGE=image:tag
