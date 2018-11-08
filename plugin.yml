@@ -35,6 +35,8 @@ configuration:
       type: [boolean, array]
     workdir:
       type: string
+    capabilities:
+        type: array
   required:
     - image
   additionalProperties: false
