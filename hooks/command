@@ -53,7 +53,7 @@ if [[ "${BUILDKITE_PLUGIN_DOCKER_DEBUG:-false}" =~ (true|on|1) ]] ; then
 fi
 
 tty_default='on'
-mount_agent_default='on'
+mount_agent_default='off'
 pwd_default="$PWD"
 workdir_default="/workdir"
 
