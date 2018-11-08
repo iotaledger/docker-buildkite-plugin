@@ -53,7 +53,7 @@ if [[ "${BUILDKITE_PLUGIN_DOCKER_DEBUG:-false}" =~ (true|on|1) ]] ; then
 fi
 
 tty_default='on'
-mount_agent_default='on'
+mount_agent_default='off'
 pwd_default="$PWD"
 workdir_default="/workdir"
 
@@ -125,6 +125,8 @@ fi
 while IFS='=' read -r name _ ; do
   if [[ $name =~ ^(BUILDKITE_PLUGIN_DOCKER_ADDITIONAL_GROUPS_[0-9]+) ]] ; then
     args+=( "--group-add" "${!name}" )
+  elif [[ $name =~ ^(BUILDKITE_PLUGIN_DOCKER_CAPABILITIES_[0-9]+) ]] ; then
+      args+=( "--cap-add" "${!name}" )
   fi
 done < <(env | sort)
 
