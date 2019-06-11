@@ -43,6 +43,8 @@ configuration:
       type: array
     workdir:
       type: string
+    capabilities:
+        type: array
     propagate-environment:
       type: boolean
     propagate-uid-gid:
